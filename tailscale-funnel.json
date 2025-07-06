@@ -1,19 +1,10 @@
 {
   "TCP": {
-    "443": {
-      "HTTPS": true
-    }
-  },
-  "Web": {
-    "minecraft.tail13cb9.ts.net:443": {
-      "Handlers": {
-        "/": {
-          "Proxy": "http://127.0.0.1:8100"
-        }
-      }
+    "10000": {
+      "TCPForward": "localhost:25577"
     }
   },
   "AllowFunnel": {
-    "minecraft.tail13cb9.ts.net:443": true
+    "minecraft.tail13cb9.ts.net:10000": true
   }
 }

@@ -25,6 +25,35 @@ services:
       retries: 3
       start_period: 4s
 
+  proxy:
+    image: itzg/mc-proxy
+    container_name: proxy
+    environment:
+      TYPE: "VELOCITY"
+      MEMORY: "512m"
+      MINECRAFT_VERSION: "1.21.7"
+      MODRINTH_ALLOWED_VERSION_TYPE: "release"
+      MODRINTH_DOWNLOAD_DEPENDENCIES: "REQUIRED"
+      MODRINTH_PROJECTS: |
+        viaversion
+        viabackwards
+    volumes:
+      - ./proxy_data:/server:Z
+      - ./velocity.toml:/config/velocity.toml:Z
+      - ./forwarding.secret:/config/forwarding.secret:Z
+    restart: always
+    deploy:
+      resources:
+        limits:
+          cpus: "2.0"
+          memory: 1GB
+    healthcheck:
+      test: mc-health
+      start_period: 30s
+      interval: 15s
+      retries: 20
+    network_mode: "service:tailscale-service"
+
   minecraft:
     image: itzg/minecraft-server:java21-graalvm
     container_name: minecraft-fabric-server
@@ -41,6 +70,7 @@ services:
       ENABLE_RCON: "false"
       MOTD: "Minecraft Server" 
       SEED: "8937129649407563577"
+      ONLINE_MODE: "false"
       SIMULATION_DISTANCE: 4
       VIEW_DISTANCE: 14
       HIDE_ONLINE_PLAYERS: "true"
