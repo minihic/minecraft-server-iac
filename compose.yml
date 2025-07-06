@@ -1,0 +1,97 @@
+services:
+  tailscale-service:
+    image: docker.io/tailscale/tailscale
+    container_name: tailscale-mc
+    cap_add:
+      - NET_ADMIN
+    env_file:
+      - .env
+    environment:
+      - TS_STATE_DIR=/var/lib/tailscale
+      - TS_USERSPACE=true
+      - TS_EXTRA_ARGS=--advertise-tags=tag:internal
+      - TS_SOCKS5_SERVER=:1055
+      - TS_ENABLE_HEALTH_CHECK=true
+      - TS_LOCAL_ADDR_PORT=[::]:9002
+      - TS_SERVE_CONFIG=/app/tailscale-funnel.json
+    volumes:
+      - tailscale-mc-data:/var/lib/tailscale
+      - ./tailscale-funnel.json:/app/tailscale-funnel.json:Z
+    restart: always
+    healthcheck:
+      test: ["CMD", "sh", "-c", "sleep 5; wget -q --spider http://localhost:9002/healthz"]
+      interval: 15s
+      timeout: 3s
+      retries: 3
+      start_period: 4s
+
+  minecraft:
+    image: itzg/minecraft-server:java21-graalvm
+    container_name: minecraft-fabric-server
+    stdin_open: true
+    tty: true
+    environment:
+      EULA: "TRUE" 
+      VERSION: "1.21.7"
+      TYPE: "FABRIC"
+      MAX_PLAYERS: 10
+      MEMORY: "6G"
+      USE_MEOWICE_FLAGS: "true"
+      USE_MEOWICE_GRAALVM_FLAGS: "true"
+      ENABLE_RCON: "false"
+      MOTD: "Minecraft Server" 
+      SEED: "8937129649407563577"
+      SIMULATION_DISTANCE: 4
+      VIEW_DISTANCE: 14
+      HIDE_ONLINE_PLAYERS: "true"
+      DIFFICULTY: "easy"
+      MAX_TICK_TIME: -1
+      OPS: |
+        minihic
+        Sixfoil
+      MODRINTH_ALLOWED_VERSION_TYPE: "alpha"
+      MODRINTH_DOWNLOAD_DEPENDENCIES: "REQUIRED"
+      MODRINTH_PROJECTS: |
+        amplified-nether
+        badoptimizations
+        balm
+        bluemap
+        c2me-fabric
+        cristel-lib
+        dungeons-and-taverns
+        explorify
+        fabric-api
+        fabricproxy-lite
+        fallingtree
+        ferrite-core
+        lithium
+        midnightlib
+        netherportalfix
+        no-chat-reports
+        nullscape
+        repurposed-structures-fabric
+        scalablelux
+        sodium
+        terralith
+        towns-and-towers
+      PATCH_DEFINITIONS: "/app/patch-definition.json"
+    volumes:
+      - ./minecraft_data:/data:Z
+      - ./patch-definition.json:/app/patch-definition.json:Z
+    EXEC_DIRECTLY: "true"
+    restart: always
+    deploy:
+      resources:
+        limits:
+          cpus: "8.0"
+          memory: 7GB
+    healthcheck:
+      test: mc-health
+      start_period: 30s
+      interval: 15s
+      retries: 20
+    network_mode: "service:tailscale-service"
+
+volumes:
+  minecraft_data:
+  tailscale-mc-data:

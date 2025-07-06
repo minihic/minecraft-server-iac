@@ -1,0 +1,15 @@
+{
+  "patches": [
+    {
+      "file": "/data/config/fallingtree.json",
+      "ops": [
+        {
+          "$set": {
+            "path": "$.trees.breakMode",
+            "value": "SHIFT_DOWN"
+          }
+        }
+      ]
+    }
+  ]
+}
