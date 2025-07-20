@@ -1,7 +1,7 @@
 services:
   tailscale-service:
     image: docker.io/tailscale/tailscale
-    container_name: tailscale-mc
+    container_name: vsl-mc2-tailscale
     cap_add:
       - NET_ADMIN
     env_file:
@@ -15,7 +15,7 @@ services:
       - TS_LOCAL_ADDR_PORT=[::]:9002
       - TS_SERVE_CONFIG=/app/tailscale-funnel.json
     volumes:
-      - tailscale-mc-data:/var/lib/tailscale
+      - vsl-mc2-tailscale-data:/var/lib/tailscale
       - ./tailscale-funnel.json:/app/tailscale-funnel.json:Z
     restart: always
     healthcheck:
@@ -27,7 +27,7 @@ services:
 
   minecraft:
     image: itzg/minecraft-server:java21-graalvm
-    container_name: minecraft-fabric-server
+    container_name: vsl-mc2-minecraft
     stdin_open: true
     tty: true
     environment:
@@ -35,11 +35,12 @@ services:
       VERSION: "1.21.7"
       TYPE: "FABRIC"
       MAX_PLAYERS: 10
-      MEMORY: "6G"
+      MEMORY: ""
+      JVM_XX_OPTS: "-XX:MaxRAMPercentage=75"
       USE_MEOWICE_FLAGS: "true"
       USE_MEOWICE_GRAALVM_FLAGS: "true"
       ENABLE_RCON: "false"
-      MOTD: "Minecraft Server" 
+      MOTD: "\u00a7l   \u00a7r              \u00a79\u00a7l\u00a7ominecraft\u00a7r\u00a7l\u00a7o.\u00a7a\u00a7l\u00a7ominihic\u00a7r\u00a7l\u00a7o.\u00a7b\u00a7l\u00a7oinfo\u00a7r\n\u00a7l   \u00a7r        VSL-MC2 \u00a77| \u00a79Survival\u00a77 Server | \u00a7a1.21.7" 
       SEED: "8937129649407563577"
       SIMULATION_DISTANCE: 4
       VIEW_DISTANCE: 14
@@ -48,7 +49,6 @@ services:
       MAX_TICK_TIME: -1
       OPS: |
         minihic
-        Sixfoil
       MODRINTH_ALLOWED_VERSION_TYPE: "alpha"
       MODRINTH_DOWNLOAD_DEPENDENCIES: "REQUIRED"
       MODRINTH_PROJECTS: |
@@ -84,7 +84,7 @@ services:
       resources:
         limits:
           cpus: "8.0"
-          memory: 7GB
+          memory: 4GB
     healthcheck:
       test: mc-health
       start_period: 30s
@@ -93,5 +93,4 @@ services:
     network_mode: "service:tailscale-service"
 
 volumes:
-  minecraft_data:
-  tailscale-mc-data:
+  vsl-mc2-tailscale-data:

@@ -5,7 +5,7 @@
     }
   },
   "Web": {
-    "minecraft.tail13cb9.ts.net:443": {
+    "vsl-mc2.tail13cb9.ts.net:443": {
       "Handlers": {
         "/": {
           "Proxy": "http://127.0.0.1:8100"
@@ -14,6 +14,6 @@
     }
   },
   "AllowFunnel": {
-    "minecraft.tail13cb9.ts.net:443": true
+    "vsl-mc2.tail13cb9.ts.net:443": true
   }
 }
