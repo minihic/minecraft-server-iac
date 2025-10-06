@@ -35,15 +35,15 @@ services:
       VERSION: "1.21.9"
       TYPE: "FABRIC"
       MAX_PLAYERS: 20
-      MEMORY: "6G"
+      MEMORY: "8G"
       JVM_XX_OPTS: "-XX:MaxRAMPercentage=75"
       USE_MEOWICE_FLAGS: "true"
       USE_MEOWICE_GRAALVM_FLAGS: "true"
       ENABLE_RCON: "false"
-      MOTD: "\u00a7l   \u00a7r              \u00a79\u00a7l\u00a7ominecraft\u00a7r\u00a7l\u00a7o.\u00a7a\u00a7l\u00a7ominihic\u00a7r\u00a7l\u00a7o.\u00a7b\u00a7l\u00a7oinfo\u00a7r\n\u00a7l   \u00a7r        VSL-MC2 \u00a77| \u00a79Survival\u00a77 Server | \u00a7a1.21.9" 
+      MOTD: "\u00a7l  \u00a7r                   \u00a79\u00a7l\u00a7omstb\u00a7r\u00a7l\u00a7o.\u00a7a\u00a7l\u00a7ominihic\u00a7r\u00a7l\u00a7o.\u00a7b\u00a7l\u00a7oinfo\u00a7r\n\u00a7l   \u00a7r        VSL-MC2 \u00a77| \u00a79Survival\u00a77 Server | \u00a7a1.21.9" 
       SEED: "89371242349407563577"
       SIMULATION_DISTANCE: 3
-      VIEW_DISTANCE: 14
+      VIEW_DISTANCE: 12
       HIDE_ONLINE_PLAYERS: "true"
       DIFFICULTY: "easy"
       MAX_TICK_TIME: -1
